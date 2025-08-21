@@ -1,7 +1,7 @@
 // Vercel Serverless Function for CORS Proxy
 // Handles DashScope ASR API requests with CORS support
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   try {
     // Set CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
