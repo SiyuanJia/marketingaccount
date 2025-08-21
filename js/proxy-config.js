@@ -15,8 +15,8 @@ class ProxyConfig {
             },
             // 您自己部署的代理（生产环境）
             {
-                url: 'https://your-proxy-domain.vercel.app/api',
-                name: '自建代理',
+                url: 'https://your-project.vercel.app/api/proxy',
+                name: 'Vercel代理',
                 priority: 2,
                 prodOnly: true // 仅生产环境使用
             }
@@ -81,7 +81,8 @@ class ProxyConfig {
     async testProxy(proxy) {
         const startTime = Date.now();
         try {
-            const testUrl = `${proxy.url}/healthz`;
+            // 对于Vercel代理，直接测试代理端点
+            const testUrl = proxy.url.includes('vercel.app') ? proxy.url : `${proxy.url}/healthz`;
             const response = await fetch(testUrl, {
                 method: 'GET',
                 timeout: 5000

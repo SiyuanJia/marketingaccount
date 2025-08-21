@@ -39,9 +39,9 @@ class ASRService {
             console.log('🔧 开发环境，使用本地代理: http://localhost:3001');
             return 'http://localhost:3001';
         } else {
-            // 生产环境：需要您部署代理服务并替换这个URL
-            console.log('🌐 生产环境，使用云端代理');
-            return 'https://your-proxy-domain.vercel.app/api';
+            // 生产环境：使用Vercel部署的代理服务
+            console.log('🌐 生产环境，使用Vercel代理');
+            return 'https://your-project.vercel.app/api/proxy';
         }
     }
 
