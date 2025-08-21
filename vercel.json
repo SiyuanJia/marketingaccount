@@ -5,12 +5,6 @@
       "runtime": "nodejs18.x"
     }
   },
-  "routes": [
-    {
-      "src": "/api/proxy",
-      "dest": "/api/proxy.js"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
