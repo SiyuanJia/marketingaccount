@@ -1,0 +1,19 @@
+/* Recording Section */
+.recording-section { text-align: center; margin-bottom: 60px; position: relative; min-height: 300px; display: flex; align-items: center; justify-content: center; }
+.recording-background { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; overflow: hidden; }
+.background-ring { position: absolute; border: 2px solid rgba(102, 126, 234, 0.1); border-radius: 50%; animation: float-ring 8s ease-in-out infinite; }
+.background-ring:nth-child(1) { width: 200px; height: 200px; top: 20%; left: 10%; border-color: rgba(240, 147, 251, 0.15); animation-delay: 0s; }
+.background-ring:nth-child(2) { width: 150px; height: 150px; top: 60%; right: 15%; border-color: rgba(79, 172, 254, 0.12); animation-delay: 2s; }
+.background-ring:nth-child(3) { width: 120px; height: 120px; top: 10%; right: 25%; border-color: rgba(102, 126, 234, 0.08); animation-delay: 4s; }
+.background-ring:nth-child(4) { width: 180px; height: 180px; bottom: 20%; left: 20%; border-color: rgba(240, 147, 251, 0.1); animation-delay: 6s; }
+.recording-container { position: relative; display: inline-block; z-index: 2; }
+.recording-visualizer { position: absolute; top: 0; left: 0; width: 120px; height: 120px; pointer-events: none; }
+.record-button { width: 120px; height: 120px; border-radius: 50%; border: none; background: var(--primary-gradient); cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow-soft); position: relative; z-index: 2; animation: recordGlow 2s ease-in-out infinite, recordBreathe 3s ease-in-out infinite; }
+.record-button:hover { transform: scale(1.05); box-shadow: var(--shadow-glow); }
+.record-button.recording { background: var(--secondary-gradient); animation: pulse 2s infinite; }
+.record-icon { width: 100%; height: 100%; color: white; display: flex; align-items: center; justify-content: center; position: absolute; top: 0; left: 0; }
+.record-icon i { font-size: 40px; color: currentColor; transform: translateY(-2px); }
+.recording-status { margin-top: 20px; }
+#recordingTime { font-size: 24px; font-weight: 600; color: var(--accent-blue); display: block; margin-bottom: 8px; }
+#recordingText { color: var(--text-secondary); font-size: 16px; }
+

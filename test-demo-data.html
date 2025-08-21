@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>演示数据测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #1a1a2e; color: white; }
+        .demo-item { margin: 20px 0; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; }
+        .demo-title { font-size: 18px; font-weight: bold; color: #00d4ff; margin-bottom: 10px; }
+        .field { margin: 8px 0; }
+        .field-label { font-weight: bold; color: #8b5cf6; }
+        .field-value { margin-left: 10px; }
+        .tag { background: #4facfe; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin: 2px; }
+        button { background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 10px 5px; }
+        button:hover { background: #5a67d8; }
+    </style>
+</head>
+<body>
+    <h1>演示数据测试页面</h1>
+    
+    <button onclick="testRandomDemo()">获取随机演示数据</button>
+    <button onclick="showAllDemos()">显示所有演示数据</button>
+    <button onclick="testSpecificDemo(2)">测试失败复盘数据</button>
+    
+    <div id="output"></div>
+
+    <script src="assets/demo-data.js"></script>
+    <script>
+        function testRandomDemo() {
+            const demo = window.getRandomDemoData();
+            displayDemo('随机演示数据', demo);
+        }
+        
+        function showAllDemos() {
+            const output = document.getElementById('output');
+            output.innerHTML = '<h2>所有演示数据</h2>';
+            
+            window.demoData.recordings.forEach((recording, index) => {
+                const demoDiv = document.createElement('div');
+                demoDiv.className = 'demo-item';
+                demoDiv.innerHTML = `
+                    <div class="demo-title">${index + 1}. ${recording.title}</div>
+                    <div class="field">
+                        <span class="field-label">业务类别:</span>
+                        <span class="field-value">${recording.analysis.businessType}</span>
+                    </div>
+                    <div class="field">
+                        <span class="field-label">客户画像:</span>
+                        <span class="field-value">
+                            ${recording.analysis.customerProfile.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </span>
+                    </div>
+                    <div class="field">
+                        <span class="field-label">可选字段:</span>
+                        <div class="field-value">
+                            ${Object.entries(recording.analysis.optionalFields || {}).map(([key, value]) => 
+                                `<div><strong>${getFieldLabel(key)}:</strong> ${value}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+                output.appendChild(demoDiv);
+            });
+        }
+        
+        function testSpecificDemo(index) {
+            const recording = window.demoData.recordings[index];
+            if (recording) {
+                displayDemo(`演示数据 ${index + 1}: ${recording.title}`, {
+                    transcription: recording.transcription,
+                    analysis: recording.analysis
+                });
+            }
+        }
+        
+        function displayDemo(title, demo) {
+            const output = document.getElementById('output');
+            output.innerHTML = `
+                <div class="demo-item">
+                    <div class="demo-title">${title}</div>
+                    <div class="field">
+                        <span class="field-label">转录文本:</span>
+                        <div class="field-value">${demo.transcription.text}</div>
+                    </div>
+                    <div class="field">
+                        <span class="field-label">业务类别:</span>
+                        <span class="field-value">${demo.analysis.businessType}</span>
+                    </div>
+                    <div class="field">
+                        <span class="field-label">客户信息:</span>
+                        <span class="field-value">${demo.analysis.customerInfo.name} (${demo.analysis.customerInfo.customerId})</span>
+                    </div>
+                    <div class="field">
+                        <span class="field-label">客户画像:</span>
+                        <span class="field-value">
+                            ${demo.analysis.customerProfile.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </span>
+                    </div>
+                    <div class="field">
+                        <span class="field-label">跟进规划:</span>
+                        <div class="field-value">${demo.analysis.followUpPlan}</div>
+                    </div>
+                    <div class="field">
+                        <span class="field-label">可选字段:</span>
+                        <div class="field-value">
+                            ${Object.entries(demo.analysis.optionalFields || {}).map(([key, value]) => 
+                                `<div><strong>${getFieldLabel(key)}:</strong> ${value}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function getFieldLabel(key) {
+            const labels = {
+                demandStimulation: '需求激发',
+                objectionHandling: '异议处理',
+                customerTouchPoint: '打动客户的点',
+                failureReview: '失败复盘',
+                extendedThinking: '延伸思考'
+            };
+            return labels[key] || key;
+        }
+        
+        // 页面加载时显示所有数据
+        window.addEventListener('load', () => {
+            setTimeout(showAllDemos, 100);
+        });
+    </script>
+</body>
+</html>

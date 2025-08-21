@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "proxy.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/proxy.js"
+    }
+  ]
+}

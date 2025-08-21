@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .test-item {
+            background: #2a2a2a;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        .test-item.error {
+            border-left-color: #f44336;
+        }
+        .test-item.warning {
+            border-left-color: #ff9800;
+        }
+        pre {
+            background: #333;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 服务测试页面</h1>
+    
+    <div id="test-results"></div>
+    
+    <button onclick="runTests()">🧪 运行测试</button>
+    <button onclick="testUpload()">📤 测试上传服务</button>
+    <button onclick="testASR()">🎤 测试ASR服务</button>
+
+    <!-- 引入所有服务 -->
+    <script src="js/config.js?v=6"></script>
+    <script src="js/asr-service.js?v=6"></script>
+    <script src="js/simple-upload.js?v=6"></script>
+    <script src="js/api.js?v=6"></script>
+
+    <script>
+        function addTestResult(name, status, details) {
+            const resultsDiv = document.getElementById('test-results');
+            const testItem = document.createElement('div');
+            testItem.className = `test-item ${status}`;
+            
+            testItem.innerHTML = `
+                <h3>${status === 'success' ? '✅' : status === 'error' ? '❌' : '⚠️'} ${name}</h3>
+                <pre>${JSON.stringify(details, null, 2)}</pre>
+            `;
+            
+            resultsDiv.appendChild(testItem);
+        }
+
+        function runTests() {
+            document.getElementById('test-results').innerHTML = '';
+            
+            // 测试1: 检查全局对象
+            try {
+                const globals = {
+                    ASRService: typeof window.ASRService,
+                    SimpleUploadService: typeof window.SimpleUploadService,
+                    configManager: typeof window.configManager,
+                    apiService: typeof window.apiService
+                };
+                addTestResult('全局对象检查', 'success', globals);
+            } catch (error) {
+                addTestResult('全局对象检查', 'error', error.message);
+            }
+
+            // 测试2: 检查API服务状态
+            try {
+                if (window.apiService) {
+                    const apiStatus = {
+                        mockMode: window.apiService.mockMode,
+                        hasASRService: !!window.apiService.asrService,
+                        hasUploadService: !!window.apiService.uploadService,
+                        dashscopeConfig: window.apiService.config.dashscope.apiKey !== 'YOUR_DASHSCOPE_API_KEY'
+                    };
+                    addTestResult('API服务状态', 'success', apiStatus);
+                } else {
+                    addTestResult('API服务状态', 'error', 'apiService未初始化');
+                }
+            } catch (error) {
+                addTestResult('API服务状态', 'error', error.message);
+            }
+
+            // 测试3: 检查配置管理器
+            try {
+                if (window.configManager) {
+                    const configStatus = {
+                        isConfigured: window.configManager.isConfigured(),
+                        dashscopeKey: !!window.configManager.getDashScopeApiKey()
+                    };
+                    addTestResult('配置管理器', 'success', configStatus);
+                } else {
+                    addTestResult('配置管理器', 'error', 'configManager未初始化');
+                }
+            } catch (error) {
+                addTestResult('配置管理器', 'error', error.message);
+            }
+
+            // 测试4: 检查上传服务
+            try {
+                if (window.apiService && window.apiService.uploadService) {
+                    // 确保服务已初始化
+                    window.apiService.ensureServicesInitialized();
+
+                    if (typeof window.apiService.uploadService.getStatus === 'function') {
+                        const uploadStatus = window.apiService.uploadService.getStatus();
+                        addTestResult('上传服务状态', 'success', uploadStatus);
+                    } else {
+                        addTestResult('上传服务状态', 'error', 'getStatus方法不存在');
+                    }
+                } else {
+                    addTestResult('上传服务状态', 'warning', '上传服务未初始化');
+                }
+            } catch (error) {
+                addTestResult('上传服务状态', 'error', error.message);
+            }
+        }
+
+        async function testUpload() {
+            try {
+                // 确保服务已初始化
+                if (window.apiService) {
+                    window.apiService.ensureServicesInitialized();
+                }
+
+                // 创建一个小的测试音频文件
+                const testBlob = new Blob(['test audio data'], { type: 'audio/wav' });
+
+                if (window.apiService && window.apiService.uploadService) {
+                    addTestResult('上传测试', 'warning', '开始测试上传...');
+
+                    const url = await window.apiService.uploadService.uploadAudio(testBlob);
+                    addTestResult('上传测试', 'success', { url: url });
+                } else {
+                    addTestResult('上传测试', 'error', '上传服务未初始化');
+                }
+            } catch (error) {
+                addTestResult('上传测试', 'error', error.message);
+            }
+        }
+
+        async function testASR() {
+            try {
+                if (!window.configManager.isConfigured()) {
+                    addTestResult('ASR测试', 'warning', '请先配置DashScope API Key');
+                    return;
+                }
+
+                // 创建一个小的测试音频文件
+                const testBlob = new Blob(['test audio data'], { type: 'audio/wav' });
+                
+                addTestResult('ASR测试', 'warning', '开始测试ASR...');
+                
+                const result = await window.apiService.transcribeAudio(testBlob);
+                addTestResult('ASR测试', 'success', result);
+                
+            } catch (error) {
+                addTestResult('ASR测试', 'error', error.message);
+            }
+        }
+
+        // 页面加载完成后自动运行测试
+        window.addEventListener('load', () => {
+            setTimeout(runTests, 1000); // 等待1秒确保所有脚本加载完成
+        });
+    </script>
+</body>
+</html>

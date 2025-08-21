@@ -1,0 +1,12 @@
+/* Header */
+.header { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; margin-bottom: 40px; }
+.logo { display: flex; align-items: center; gap: 12px; }
+.logo-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+.logo-icon i { font-size: 28px; color: var(--accent-blue); background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.logo-text { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.02em; }
+.user-actions { display: flex; align-items: center; gap: 16px; }
+.user-avatar, .settings-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-glass); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1); }
+.user-avatar svg, .settings-btn svg { width: 20px; height: 20px; color: var(--text-secondary); }
+.user-avatar:hover, .settings-btn:hover { background: var(--bg-card); transform: translateY(-2px); box-shadow: var(--shadow-glow); }
+.user-avatar:hover svg, .settings-btn:hover svg { color: var(--text-primary); }
+

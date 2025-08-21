@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="musicGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#feca57;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  <circle cx="50" cy="50" r="45" fill="url(#musicGrad)"/>
+  <circle cx="50" cy="50" r="15" fill="#fff" opacity="0.3"/>
+  <circle cx="50" cy="50" r="8" fill="#333"/>
+  <path d="M35 35 Q50 25 65 35 Q50 45 35 35" fill="#fff" opacity="0.6"/>
+</svg>

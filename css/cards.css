@@ -1,0 +1,155 @@
+/* Feature Cards */
+.feature-cards { margin-bottom: 30px; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.feature-card {
+    background: linear-gradient(135deg, #DEFF96 0%, #C8E6C9 100%);
+    border-radius: 20px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    color: #2E7D32;
+    box-shadow: 0 8px 32px rgba(222, 255, 150, 0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 120px;
+}
+
+/* 第一个卡片：点阵背景 */
+.feature-card:nth-child(1)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 20% 20%, rgba(46, 125, 50, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 80% 20%, rgba(46, 125, 50, 0.08) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 40% 60%, rgba(46, 125, 50, 0.06) 1px, transparent 1px),
+        radial-gradient(circle at 70% 80%, rgba(46, 125, 50, 0.1) 2.5px, transparent 2.5px),
+        radial-gradient(circle at 10% 70%, rgba(46, 125, 50, 0.08) 1.8px, transparent 1.8px);
+    background-size: 40px 40px, 60px 60px, 30px 30px, 50px 50px, 35px 35px;
+    background-position: 0 0, 20px 20px, 10px 10px, 30px 30px, 15px 15px;
+    pointer-events: none;
+    z-index: 1;
+}
+.feature-card:nth-child(2) {
+    background: linear-gradient(135deg, #7372D7 0%, #9C9AE8 100%);
+    color: #FFFFFF;
+    box-shadow: 0 8px 32px rgba(115, 114, 215, 0.25);
+}
+
+/* 第二个卡片：几何三角形背景 */
+.feature-card:nth-child(2)::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.08) 60%, transparent 60%),
+        linear-gradient(-45deg, transparent 30%, rgba(255, 255, 255, 0.06) 30%, rgba(255, 255, 255, 0.06) 70%, transparent 70%),
+        linear-gradient(135deg, transparent 45%, rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0.05) 55%, transparent 55%);
+    background-size: 60px 60px, 80px 80px, 40px 40px;
+    background-position: 0 0, 30px 30px, 20px 20px;
+    pointer-events: none;
+    z-index: 1;
+}
+.feature-card:nth-child(2) h3 { color: #4A148C; text-shadow: 0 2px 4px rgba(74, 20, 140, 0.1); }
+.feature-card:nth-child(2) p { color: #4A148C; opacity: 0.8; }
+.feature-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 12px 40px rgba(222, 255, 150, 0.35); }
+.feature-card:nth-child(2):hover { box-shadow: 0 12px 40px rgba(115, 114, 215, 0.35); }
+.card-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 8px;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+.card-icon i { font-size: 32px; color: currentColor; background: linear-gradient(135deg, currentColor, rgba(255,255,255,0.8)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.feature-card:nth-child(2) .card-icon i { background: linear-gradient(135deg, #5E35B1, #9C27B0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.feature-card h3 { font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif; font-size: 22px; font-weight: 900; margin-bottom: 4px; letter-spacing: 0.02em; line-height: 1.2; color: #2e7d32; text-shadow: 0 2px 4px rgba(46, 125, 50, 0.1); }
+.feature-card p { font-size: 14px; opacity: 0.8; font-weight: 500; }
+.card-gradient { position: absolute; top: 0; left: 0; right: 0; height: 100%; background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%); pointer-events: none; }
+.feature-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent); transform: rotate(45deg); transition: all 0.5s ease; opacity: 0; }
+.feature-card:hover::before { opacity: 1; animation: shimmer 1.5s ease-in-out; }
+.card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+    position: relative;
+    z-index: 2;
+}
+.recent-records { margin-bottom: 40px; margin-top: 20px; }
+.recent-records-card {
+    background: linear-gradient(135deg, #B6CAFD 0%, #9BB5FF 100%);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(182, 202, 253, 0.25);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    color: #1A237E;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+    transition: min-height 0.3s ease;
+}
+
+/* 第三个卡片：简洁点状背景 */
+.recent-records-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(26, 35, 126, 0.04) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 80% 70%, rgba(26, 35, 126, 0.03) 1px, transparent 1px),
+        radial-gradient(circle at 60% 20%, rgba(26, 35, 126, 0.05) 2px, transparent 2px);
+    background-size: 80px 80px, 120px 120px, 60px 60px;
+    background-position: 0 0, 40px 40px, 20px 20px;
+    pointer-events: none;
+    z-index: 1;
+}
+.recent-records h2 {
+    font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    margin-top: 0;
+    color: #1A237E;
+    text-shadow: 0 2px 4px rgba(26, 35, 126, 0.1);
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 2;
+}
+.records-list { display: none; flex-direction: column; gap: 8px; margin-top: 8px; list-style: none; padding: 0; }
+.records-list.has-records { display: flex; }
+.record-item { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 12px; padding: 12px 16px; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; display: flex; align-items: center; gap: 12px; }
+.record-item::before { content: '•'; color: #1A237E; font-weight: bold; font-size: 16px; }
+.record-item:hover { background: rgba(255, 255, 255, 0.25); transform: translateX(5px); box-shadow: 0 4px 12px rgba(26, 35, 126, 0.15); }
+.record-meta { display: flex; justify-content: space-between; align-items: center; flex: 1; }
+.record-title { font-weight: 500; color: #1A237E; font-size: 14px; }
+.record-time { font-size: 12px; color: #3F51B5; opacity: 0.8; }
+.record-type { font-size: 12px; color: #1A237E; margin-top: 4px; opacity: 0.7; }
+

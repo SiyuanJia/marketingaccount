@@ -1,0 +1,219 @@
+/* Analysis & Tabs */
+.expandable-content { background: var(--bg-glass); backdrop-filter: blur(20px); border-radius: 20px 20px 0 0; border: 1px solid rgba(255, 255, 255, 0.1); min-height: 300px; }
+
+/* 简洁现代的标签栏 */
+.analysis-results .tabs {
+    position: relative;
+    display: flex;
+    gap: 40px;
+    padding: 0 0 20px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 30px;
+}
+.analysis-results .tab-btn {
+    position: relative;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 16px;
+    padding: 12px 0;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+.analysis-results .tab-btn:hover {
+    color: var(--text-primary);
+}
+.analysis-results .tab-btn.active {
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+/* 简洁指示条 */
+.analysis-results .tab-indicator {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2px;
+    width: 60px;
+    border-radius: 1px;
+    background: var(--accent-blue);
+    transition: transform 0.3s ease, width 0.3s ease;
+    transform: translateX(0);
+}
+
+/* Tabs基础 */
+.tabs { position: sticky; top: 0; z-index: 5; }
+/* 让分析区突破父容器（playback-content）的800px限制并水平居中 */
+.playback-content .analysis-results {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
+}
+
+/* 标签栏也按内容宽度居中 */
+.analysis-results .tabs { justify-content: center; width: min(900px, 78vw) !important; margin: 0 auto 30px !important; }
+
+/* 兜底：如果有遗留的 .expandable-content，强制透明 */
+.analysis-results .expandable-content { background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; }
+
+.content-tabs { display: flex; }
+.tab-btn { background: transparent; border: none; transition: color 0.2s ease; font-size: 14px; }
+
+.tab-content {
+    padding: 0;
+    background: transparent;
+}
+/* 移除分析区域任何外层透明背景容器（确保干净） */
+.analysis-results,
+.analysis-results .tab-content,
+.analysis-results .tab-panel,
+.analysis-results .content-card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+/* 居中与宽度：确保内容居中且>=80%屏幕宽度 */
+.analysis-results {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.analysis-results .tab-content,
+.analysis-results .tab-panel { width: 100%; }
+.analysis-results .content-card { width: min(900px, 78vw) !important; margin: 0 auto !important; }
+
+.analysis-results {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+}
+.analysis-results .tabs, .analysis-results .tab-content {
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+/* 确保内容卡片占据更多宽度 */
+.analysis-results .content-card {
+    width: min(900px, 78vw) !important;
+    margin: 0 auto !important;
+    box-sizing: border-box;
+}
+.tab-panel .analysis-item, .tab-panel .transcript-text, .tab-panel .summary-text, .tab-panel .insights-text { width: 100%; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+.transcript-content { line-height: 1.6; color: var(--text-primary); }
+.analysis-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+/* 小模块样式 - 占据更多宽度，更好的可读性 */
+.analysis-item {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+.analysis-item:last-child {
+    margin-bottom: 0;
+}
+.analysis-label {
+    font-weight: 600;
+    color: var(--accent-blue);
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+.analysis-value {
+    color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 14px;
+}
+/* 文本内容样式 */
+.transcript-text, .summary-text, .insights-text {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.customer-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { background: var(--accent-gradient); color: white; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 500; }
+
+
+/* 底部操作区域 */
+.bottom-actions {
+    margin-top: 32px;
+    padding: 24px 0;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* 导入台账按钮 - 页面底部样式 */
+.import-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--primary-gradient);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    min-width: 140px;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.import-btn:not(:disabled):hover {
+    background: var(--primary-gradient);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    border-color: transparent;
+}
+
+.import-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    color: var(--text-secondary);
+    background: var(--bg-glass);
+    box-shadow: none;
+}
+
+.import-btn i {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.import-btn:not(:disabled):hover i {
+    opacity: 1;
+}
+
