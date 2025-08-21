@@ -7,7 +7,6 @@
     "dev": "node dev-proxy.js",
     "start": "node dev-proxy.js",
     "proxy": "node dev-proxy.js",
-    "build": "echo 'No build step required for static site'",
     "test": "echo 'No tests specified'"
   },
   "keywords": [
