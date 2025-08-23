@@ -85,12 +85,16 @@ class APIService {
 
         // 在发起真实调用前，探测本地代理是否可用
         try {
-            const health = await fetch('http://localhost:3001/healthz', { method: 'GET' });
-            if (!health.ok) throw new Error('proxy unhealthy');
+            const isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+            if (isDev) {
+                const health = await fetch('http://localhost:3001/healthz', { method: 'GET' });
+                if (!health.ok) throw new Error('proxy unhealthy');
+            }
         } catch (e) {
-            console.warn('本地代理不可用，自动切换到模拟ASR模式');
-            // 代理不可用时，不要中断流程，退回模拟模式
-            return this.mockASRResponse();
+            if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+                console.warn('本地代理不可用，自动切换到模拟ASR模式');
+                return this.mockASRResponse();
+            }
         }
 
         // 恢复真实ASR调用，测试MP4格式是否可以成功
@@ -248,6 +252,8 @@ class APIService {
     // 检查代理服务器是否运行（复用ASR的代理服务器）
     async checkProxyServer() {
         try {
+            const isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+            if (!isDev) return true; // 生产环境认为代理可用，由具体请求失败再兜底
             const response = await fetch('http://localhost:3001/healthz', {
                 method: 'GET',
                 timeout: 3000
@@ -791,7 +797,15 @@ ${transcriptText}
         const originalUrl = `${this.config.feishu.endpoint}/bitable/v1/apps/${this.config.feishu.appToken}/tables/${this.config.feishu.tableId}/records`;
 
         // 使用与ASR相同的代理服务器格式
-        const proxyUrl = `http://localhost:3001?url=${encodeURIComponent(originalUrl)}`;
+        let proxyBase;
+        if (window.proxyConfig && typeof window.proxyConfig.getAvailableProxy === 'function') {
+            try { proxyBase = await window.proxyConfig.getAvailableProxy(); } catch (_) {}
+        }
+        if (!proxyBase) {
+            const isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+            proxyBase = isDev ? 'http://localhost:3001' : 'https://marketingaccount.vercel.app/api/proxy';
+        }
+        const proxyUrl = `${proxyBase}?url=${encodeURIComponent(originalUrl)}`;
 
         console.log('📤 飞书API请求:', {
             originalUrl,
