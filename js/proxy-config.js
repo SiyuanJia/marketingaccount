@@ -15,7 +15,7 @@ class ProxyConfig {
             },
             // 您自己部署的代理（生产环境）
             {
-                url: 'https://your-project.vercel.app/api/proxy',
+                url: 'https://marketingaccount.vercel.app/api/proxy',
                 name: 'Vercel代理',
                 priority: 2,
                 prodOnly: true // 仅生产环境使用
