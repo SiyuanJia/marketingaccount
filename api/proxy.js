@@ -46,9 +46,14 @@ module.exports = async function handler(req, res) {
     const allowedDomains = [
       'dashscope.aliyuncs.com',
       'api.302.ai',
-      'open.feishu.cn'
+      'open.feishu.cn',
+      'tmpfiles.org',
+      '0x0.st',
+      'www.file.io',
+      'catbox.moe',
+      'uguu.se'
     ];
-    
+
     if (!allowedDomains.includes(targetUrl.hostname)) {
       return res.status(403).json({ 
         error: 'Domain not allowed', 

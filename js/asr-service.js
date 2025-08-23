@@ -41,7 +41,15 @@ class ASRService {
         } else {
             // 生产环境：使用Vercel部署的代理服务
             console.log('🌐 生产环境，使用Vercel代理');
-            return 'https://your-project.vercel.app/api/proxy';
+            if (window.proxyConfig && typeof window.proxyConfig.getAvailableProxy === 'function') {
+                try {
+                    const url = await window.proxyConfig.getAvailableProxy();
+                    return url;
+                } catch (e) {
+                    console.warn('proxy-config 获取代理失败，回退默认域名', e);
+                }
+            }
+            return 'https://marketingaccount.vercel.app/api/proxy';
         }
     }
 
