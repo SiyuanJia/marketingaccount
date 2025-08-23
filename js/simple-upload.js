@@ -44,6 +44,22 @@ class SimpleUploadService {
     }
 
     /**
+     * 获取代理基础地址（开发环境用本地，生产用线上）
+     */
+    async getProxyBase() {
+        const isDev = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        if (isDev) return 'http://localhost:3001';
+        if (window.proxyConfig && typeof window.proxyConfig.getAvailableProxy === 'function') {
+            try {
+                return await window.proxyConfig.getAvailableProxy();
+            } catch (e) {
+                console.warn('proxy-config 获取代理失败，使用默认线上代理', e);
+            }
+        }
+        return 'https://marketingaccount.vercel.app/api/proxy';
+    }
+
+    /**
      * 上传音频文件（自动重试多个服务）
      * @param {Blob} audioBlob - 音频数据
      * @returns {Promise<string>} 公网可访问的URL
@@ -274,7 +290,8 @@ class SimpleUploadService {
 
         // 直链自检：通过本地代理发 HEAD，验证是否为 audio/*
         try {
-            const headUrl = `http://localhost:3001?url=${encodeURIComponent(directUrl)}`;
+            const proxyBase = await this.getProxyBase();
+            const headUrl = `${proxyBase}?url=${encodeURIComponent(directUrl)}`;
             const headResp = await fetch(headUrl, { method: 'HEAD' });
             const ctype = headResp.headers.get('content-type') || '';
             if (!ctype.toLowerCase().startsWith('audio/')) {
@@ -320,7 +337,8 @@ class SimpleUploadService {
 
         // 通过本地代理转发，避免浏览器CORS
         const endpoint = 'https://www.file.io';
-        const proxyUrl = `http://localhost:3001?url=${encodeURIComponent(endpoint)}`;
+        const proxyBase = await this.getProxyBase();
+        const proxyUrl = `${proxyBase}?url=${encodeURIComponent(endpoint)}`;
 
         const response = await fetch(proxyUrl, {
             method: 'POST',
